@@ -12,8 +12,15 @@ import org.slf4j.LoggerFactory;
 import com.openclassrooms.tourguide.service.TourGuideService;
 import com.openclassrooms.tourguide.user.User;
 
+/**
+ * Class to manage the tracker thread.
+ */
 public class Tracker extends Thread {
-	private Logger logger = LoggerFactory.getLogger(Tracker.class);
+	private final Logger logger = LoggerFactory.getLogger(Tracker.class);
+	
+	/**
+	 * Manage the interval time between two positions of all users.
+	 */
 	private static final long trackingPollingInterval = TimeUnit.MINUTES.toSeconds(5);
 	private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 	private final TourGuideService tourGuideService;
@@ -32,7 +39,13 @@ public class Tracker extends Thread {
 		stop = true;
 		executorService.shutdownNow();
 	}
-
+	
+	/**
+	 * Run the thread.
+	 * Use stopWatch to measure the Time Elapsed.
+	 * Get the current location of all users.
+	 * @see TourGuideService#trackUserLocation(User).
+	 */
 	@Override
 	public void run() {
 		StopWatch stopWatch = new StopWatch();

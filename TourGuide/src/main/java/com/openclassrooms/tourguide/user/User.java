@@ -10,6 +10,9 @@ import lombok.Getter;
 import lombok.Setter;
 import tripPricer.Provider;
 
+/**
+ * The model to represent user and store locations, rewards, preferences, and personal's information.
+ */
 @Setter
 @Getter
 public class User {
@@ -22,19 +25,31 @@ public class User {
     private List<UserReward> userRewards = new ArrayList<>();
     private UserPreferences userPreferences = new UserPreferences();
     private List<Provider> tripDeals = new ArrayList<>();
-
+    
     public User(UUID userId, String userName, String phoneNumber, String emailAddress) {
         this.userId = userId;
         this.userName = userName;
         this.phoneNumber = phoneNumber;
         this.emailAddress = emailAddress;
     }
-
+    
     public void addUserReward(UserReward userReward) {
-        if (userRewards.stream().filter(r -> !r.attraction.attractionName.equals(userReward.getAttraction())).count() == 0) {
+        if(userRewards.stream()
+                .filter(r -> !r.attraction.attractionName.equals(userReward.getAttraction()))
+                .count() == 0) {
             userRewards.add(userReward);
         }
     }
-
-
+    
+    public VisitedLocation getLastVisitedLocation() {
+        return visitedLocations.get(visitedLocations.size() - 1);
+    }
+    
+    public void addToVisitedLocations(VisitedLocation visitedLocation) {
+        visitedLocations.add(visitedLocation);
+    }
+    
+    public void clearVisitedLocations() {
+        visitedLocations.clear();
+    }
 }

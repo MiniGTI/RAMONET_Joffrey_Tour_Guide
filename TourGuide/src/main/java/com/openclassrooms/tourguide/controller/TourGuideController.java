@@ -1,4 +1,4 @@
-package com.openclassrooms.tourguide;
+package com.openclassrooms.tourguide.controller;
 
 import java.util.List;
 
@@ -16,6 +16,9 @@ import com.openclassrooms.tourguide.user.UserReward;
 
 import tripPricer.Provider;
 
+/**
+ * The Api controller.
+ */
 @RestController
 public class TourGuideController {
 

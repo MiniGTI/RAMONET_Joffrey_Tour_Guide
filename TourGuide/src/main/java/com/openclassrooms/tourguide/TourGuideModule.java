@@ -7,6 +7,9 @@ import gpsUtil.GpsUtil;
 import rewardCentral.RewardCentral;
 import com.openclassrooms.tourguide.service.RewardsService;
 
+/**
+ * Configuration class to call required Beans.
+ */
 @Configuration
 public class TourGuideModule {
 	

@@ -2,16 +2,14 @@ package com.openclassrooms.tourguide.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.openclassrooms.tourguide.dto.NearAttractionsListDto;
+import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import gpsUtil.location.Attraction;
 import gpsUtil.location.VisitedLocation;
 
 import com.openclassrooms.tourguide.service.TourGuideService;
-import com.openclassrooms.tourguide.user.User;
 import com.openclassrooms.tourguide.user.UserReward;
 
 import tripPricer.Provider;
@@ -19,50 +17,73 @@ import tripPricer.Provider;
 /**
  * The Api controller.
  */
+@AllArgsConstructor
 @RestController
 public class TourGuideController {
-
-	@Autowired
-	TourGuideService tourGuideService;
-	
+    
+    
+    private final TourGuideService tourGuideService;
+    
+    /**
+     * Method to manage the home page.
+     *
+     * @return the home page.
+     */
     @RequestMapping("/")
     public String index() {
         return "Greetings from TourGuide!";
     }
     
-    @RequestMapping("/getLocation") 
-    public VisitedLocation getLocation(@RequestParam String userName) {
-    	return tourGuideService.getUserLocation(getUser(userName));
+    /**
+     * Method to manage the /getLocation?userName endPoint.
+     * <p>
+     * Call the getUserLocation parse the current location of the user.
+     * </p>
+     *
+     * @param userName the parameter parsed to get the current user.
+     * @return the VisitedLocation object to parse the JSON.
+     * @see TourGuideService#getUserLocation(String userName)
+     */
+    @RequestMapping("/getLocation")
+    public VisitedLocation getLocation(
+            @RequestParam String userName) {
+        return tourGuideService.getUserLocation(userName);
     }
     
-    //  TODO: Change this method to no longer return a List of Attractions.
- 	//  Instead: Get the closest five tourist attractions to the user - no matter how far away they are.
- 	//  Return a new JSON object that contains:
-    	// Name of Tourist attraction, 
-        // Tourist attractions lat/long, 
-        // The user's location lat/long, 
-        // The distance in miles between the user's location and each of the attractions.
-        // The reward points for visiting each Attraction.
-        //    Note: Attraction reward points can be gathered from RewardsCentral
-    @RequestMapping("/getNearbyAttractions") 
-    public List<Attraction> getNearbyAttractions(@RequestParam String userName) {
-    	VisitedLocation visitedLocation = tourGuideService.getUserLocation(getUser(userName));
-    	return tourGuideService.getNearByAttractions(visitedLocation);
+    /**
+     * Method to manage the /getNearbyByAttractions?userName endPoint.
+     * <p>
+     * Call the nearAttractionsListGenerator method to get the NearAttractionsListDto who contains the fives closest attractions.
+     * </p>
+     *
+     * @param userName the parameter parsed to get the current user.
+     * @return the NearAttractionsListDto object to parse the JSON.
+     * @see TourGuideService#nearAttractionsListGenerator(String)
+     */
+    @RequestMapping("/getNearbyAttractions")
+    public NearAttractionsListDto getNearbyAttractions(
+            @RequestParam String userName) {
+        return tourGuideService.nearAttractionsListGenerator(userName);
     }
     
-    @RequestMapping("/getRewards") 
-    public List<UserReward> getRewards(@RequestParam String userName) {
-    	return tourGuideService.getUserRewards(getUser(userName));
+    @RequestMapping("/getRewards")
+    public List<UserReward> getRewards(
+            @RequestParam String userName) {
+        return tourGuideService.getUserRewards(userName);
     }
-       
+    
+    /**
+     * Method to manage the /TripDeals?userName endPoint.
+     * <p>
+     * Call the getTripDeals method to get the fives latest Trip of the user parsed.
+     * </p>
+     *
+     * @param userName the user parsed to get latest trips.
+     * @return the list of provider object to parse the JSON.
+     */
     @RequestMapping("/getTripDeals")
-    public List<Provider> getTripDeals(@RequestParam String userName) {
-    	return tourGuideService.getTripDeals(getUser(userName));
+    public List<Provider> getTripDeals(
+            @RequestParam String userName) {
+        return tourGuideService.getTripDeals(userName);
     }
-    
-    private User getUser(String userName) {
-    	return tourGuideService.getUser(userName);
-    }
-   
-
 }

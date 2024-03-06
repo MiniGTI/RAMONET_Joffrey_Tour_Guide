@@ -1,23 +1,24 @@
-package com.openclassrooms.tourguide.helper;
+package com.openclassrooms.tourguide.internalUser;
 
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
 
 /**
  * Class to manage the userTest generation.
  */
 @Slf4j
-@Service
 public class InternalTestHelper {
     
     /**
      * Variable to set the number of user generated.
      * Set this default up to 100,000 for testing.
      */
-    @Setter
+    
     @Getter
+    @Setter
     private static int internalUserNumber = 100;
+
+    
 
 }

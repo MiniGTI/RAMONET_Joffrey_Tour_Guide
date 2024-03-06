@@ -34,7 +34,22 @@ public class User {
     }
     
     public void addUserReward(List<UserReward> newUserRewards) {
-        userRewards.addAll(newUserRewards);
+        for(UserReward userReward : newUserRewards) {
+            addUserReward(userReward);
+        }
+    }
+    
+    /**
+     * Method to verify if the attraction of the UserReward parsed is already rewarded in the user's userRewards.
+     * <p>
+     * @param userReward the userReward to save into the user's userRewards.
+     * </p>
+     */
+    public void addUserReward(UserReward userReward) {
+        if(userRewards.stream()
+                .noneMatch(u -> u.attraction.attractionName.contains(userReward.attraction.attractionName))) {
+            userRewards.add(userReward);
+        }
     }
     
     public VisitedLocation getLastVisitedLocation() {

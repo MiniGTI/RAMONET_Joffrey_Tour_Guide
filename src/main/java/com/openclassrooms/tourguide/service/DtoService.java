@@ -29,10 +29,12 @@ public class DtoService {
     
     private final TourGuideService tourGuideService;
     private final RewardsService rewardsService;
+    private final UserService userService;
     
-    public DtoService(TourGuideService tourGuideService, RewardsService rewardsService) {
+    public DtoService(TourGuideService tourGuideService, RewardsService rewardsService, UserService userService) {
         this.tourGuideService = tourGuideService;
         this.rewardsService = rewardsService;
+        this.userService = userService;
     }
     
     /**
@@ -43,7 +45,7 @@ public class DtoService {
      *
      * @param userName the userName parsed to get the User and called the getNearByAttractions method.
      * @return a NearAttractionsListDto object.
-     * @see TourGuideService#getUserByUsername(String)
+     * @see UserService#getUserByUsername(String)
      * @see TourGuideService#getNearByAttractions(VisitedLocation)
      * @see RewardsService#getDistance(Location, Location)
      * @see RewardsService#getRewardPoints(Attraction, User)
@@ -51,7 +53,7 @@ public class DtoService {
     public NearAttractionsListDto nearAttractionsListGenerator(String userName) {
         List<NearAttractionDto> nearAttractionsList = new ArrayList<>();
         
-        User user = tourGuideService.getUserByUsername(userName);
+        User user = userService.getUserByUsername(userName);
         List<Attraction> attractions = tourGuideService.getNearByAttractions(user.getLastVisitedLocation());
         
         for(Attraction attraction : attractions) {
@@ -80,10 +82,10 @@ public class DtoService {
      *
      * @param userName the userName parsed to call the getUserLocation method.
      * @return a UserLocationDto object.
-     * @see TourGuideService#getUserLocation(String)
+     * @see UserService#getUserLocation(String)
      */
     public UserLocationDto userLocationGenerator(String userName) {
-        VisitedLocation userLocation = tourGuideService.getUserLocation(userName);
+        VisitedLocation userLocation = userService.getUserLocation(userName);
         return UserLocationDto.builder()
                 .userID(userLocation.userId)
                 .location(userLocation.location)
@@ -99,11 +101,11 @@ public class DtoService {
      *
      * @param userName the userName parsed to get the User and called the getUserLocation method and getUserByUsername methods.
      * @return a TripDealsDto object.
-     * @see TourGuideService#getUserByUsername(String)
+     * @see UserService#getUserByUsername(String)
      * @see TourGuideService#getTripDeals(User)
      */
     public TripDealsDto TripDealListGenerator(String userName) {
-        User user = tourGuideService.getUserByUsername(userName);
+        User user = userService.getUserByUsername(userName);
         List<Provider> tripDeals = tourGuideService.getTripDeals(user);
         
         return TripDealsDto.builder()
@@ -120,12 +122,12 @@ public class DtoService {
      *
      * @param userName the userName parsed to get the User and called getUserRewards and getUserByUsername methods.
      * @return a UserRewardsDto object.
-     * @see TourGuideService#getUserByUsername(String)
-     * @see TourGuideService#getUserRewards(User)
+     * @see UserService#getUserByUsername(String)
+     * @see UserService#getUserRewards(User)
      */
     public UserRewardsDto UserRewardsListGenerator(String userName) {
-        User user = tourGuideService.getUserByUsername(userName);
-        List<UserReward> userRewards = tourGuideService.getUserRewards(user);
+        User user = userService.getUserByUsername(userName);
+        List<UserReward> userRewards = userService.getUserRewards(user);
         
         return UserRewardsDto.builder()
                 .userId(user.getUserId())

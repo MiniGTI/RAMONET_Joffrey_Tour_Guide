@@ -46,7 +46,9 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '21'
+          server-id: github
+          setting-path: ${{ github.workspace }}
       - name: Publish package
-        run: mvn -B deploy
+        run: mvn -B deploy -s $GITHUB_WORKSPACE/settings.xml
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ github.token }}

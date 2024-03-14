@@ -48,7 +48,9 @@ jobs:
           java-version: '21'
           server-id: github
           setting-path: ${{ github.workspace }}
+      - name: Package
+        run: mvn -B package -Dmaven.test.skip=true --file pom.xml
       - name: Publish package
-        run: mvn -B deploy -Dmaven.test.skip=true
+        run: mvn -B deploy -Dmaven.test.skip=true -s $GITHUB_WORSPACE/settings.xml
         env:
           GITHUB_TOKEN: ${{ secrets.API_TOKEN }}

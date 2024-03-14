@@ -51,4 +51,4 @@ jobs:
       - name: Publish package
         run: mvn -B deploy -Dmaven.test.skip=true
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ API_TOKEN }}

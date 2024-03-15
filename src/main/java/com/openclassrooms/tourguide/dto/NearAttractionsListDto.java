@@ -1,8 +1,6 @@
 package com.openclassrooms.tourguide.dto;
 
 import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.util.List;
 import java.util.UUID;
@@ -17,11 +15,6 @@ import java.util.UUID;
  * @see com.openclassrooms.tourguide.service.DtoService#nearAttractionsListGenerator(String)
  * @see com.openclassrooms.tourguide.controller.TourGuideController#getNearbyAttractions(String)
  */
-@Setter
-@Getter
+
 @Builder
-public class NearAttractionsListDto {
-    
-    private UUID userId;
-    private List<NearAttractionDto> nearAttractionList;
-}
+public record NearAttractionsListDto(UUID userId, List<NearAttractionDto> nearAttractionList) {}

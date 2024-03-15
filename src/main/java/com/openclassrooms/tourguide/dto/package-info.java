@@ -1,4 +1,4 @@
 /**
- * Package of dto classes.
+ * Package of dto records.
  */
 package com.openclassrooms.tourguide.dto;

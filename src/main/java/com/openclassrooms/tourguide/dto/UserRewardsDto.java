@@ -2,8 +2,6 @@ package com.openclassrooms.tourguide.dto;
 
 import com.openclassrooms.tourguide.user.UserReward;
 import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.util.List;
 import java.util.UUID;
@@ -17,10 +15,6 @@ import java.util.UUID;
  * @see com.openclassrooms.tourguide.service.DtoService#UserRewardsListGenerator(String)
  * @see com.openclassrooms.tourguide.controller.TourGuideController#getRewards(String)
  */
-@Setter
-@Getter
+
 @Builder
-public class UserRewardsDto {
-    private final UUID userId;
-    private List<UserReward> userRewards;
-}
+public record UserRewardsDto(UUID userId, List<UserReward> userRewards) {}

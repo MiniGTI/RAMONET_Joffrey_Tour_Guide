@@ -87,7 +87,7 @@ public class DtoService {
     public UserLocationDto userLocationGenerator(String userName) {
         VisitedLocation userLocation = userService.getUserLocation(userName);
         return UserLocationDto.builder()
-                .userID(userLocation.userId)
+                .userId(userLocation.userId)
                 .location(userLocation.location)
                 .timeVisited(userLocation.timeVisited)
                 .build();

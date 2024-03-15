@@ -30,7 +30,7 @@
         <server>
             <id>github</id>
             <username>MiniGTI</username>
-            <password>${{ secrets.API_TOKEN }}</password>
+            <password>${{ API_TOKEN }}</password>
         </server>
     </servers>
 </settings>

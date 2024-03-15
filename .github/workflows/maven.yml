@@ -51,6 +51,6 @@ jobs:
       - name: Package
         run: mvn -B package -Dmaven.test.skip=true --file pom.xml
       - name: Publish package
-        run: mvn -B deploy -Dmaven.test.skip=true -s $GITHUB_WORSPACE/settings.xml
+        run: mvn -B deploy -Dmaven.test.skip=true
         env:
           GITHUB_TOKEN: ${{ secrets.API_TOKEN }}

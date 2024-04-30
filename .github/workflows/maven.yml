@@ -31,7 +31,7 @@ jobs:
         java-version: '21'
     - name: Test with maven
       env:
-        server.port: ${{ SERVER_WEB_PORT }} 
+        server.port: ${SERVER_WEB_PORT}
       run: mvn -Dtest=\!TestPerformance verify
 
   package:
@@ -51,4 +51,4 @@ jobs:
       - name: deploy package
         run: mvn --batch-mode deploy -Dmaven.test.skip=true
         env:
-          GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${secrets.MY_GITHUB_TOKEN}

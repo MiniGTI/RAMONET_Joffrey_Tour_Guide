@@ -30,6 +30,8 @@ jobs:
         distribution: 'temurin'
         java-version: '21'
     - name: Test with maven
+      env:
+        ${SERVER_WEB_PORT}: ${{ SERVER_WEB_PORT }} 
       run: mvn -Dtest=\!TestPerformance verify
 
   package:

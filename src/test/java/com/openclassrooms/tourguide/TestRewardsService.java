@@ -18,7 +18,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import rewardCentral.RewardCentral;
 import com.openclassrooms.tourguide.internalUser.InternalTestHelper;
 import com.openclassrooms.tourguide.service.RewardsService;
-import com.openclassrooms.tourguide.service.TourGuideService;
 import com.openclassrooms.tourguide.user.User;
 import com.openclassrooms.tourguide.user.UserReward;
 

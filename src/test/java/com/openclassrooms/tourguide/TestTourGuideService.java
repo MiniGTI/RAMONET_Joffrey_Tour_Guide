@@ -22,12 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 public class TestTourGuideService {
-/*
-    private final GpsUtil gpsUtil = new GpsUtil();
-    private final RewardsService rewardsService = new RewardsService(gpsUtil, new RewardCentral());
-    private final TourGuideService tourGuideService = new TourGuideService(gpsUtil, rewardsService);
-    private final UserService userService = new UserService(tourGuideService, rewardsService);
-  */
+
     
     @Test
     public void getUserLocationTest() {

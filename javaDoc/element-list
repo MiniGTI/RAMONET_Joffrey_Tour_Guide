@@ -1,0 +1,7 @@
+com.openclassrooms.tourguide
+com.openclassrooms.tourguide.controller
+com.openclassrooms.tourguide.dto
+com.openclassrooms.tourguide.internalUser
+com.openclassrooms.tourguide.service
+com.openclassrooms.tourguide.tracker
+com.openclassrooms.tourguide.user

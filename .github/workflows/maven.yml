@@ -47,6 +47,6 @@ jobs:
           distribution: 'temurin'
           java-version: '21'
       - name: deploy package
-        run: mvn --batch-mode deploy -Dmaven.test.skip=true
+        run: mvn clean --batch-mode deploy -Dmaven.test.skip=true
         env:
           GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}

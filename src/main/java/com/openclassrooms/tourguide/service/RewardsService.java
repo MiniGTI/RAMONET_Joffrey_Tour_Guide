@@ -70,13 +70,15 @@ public class RewardsService {
      * @see #isWithinAttractionProximity(Attraction, Location)
      */
     private final int attractionProximityRange = 200;
-    private final ExecutorService executorService = Executors.newFixedThreadPool(1000);
+    
+    
+    private final ExecutorService executorService = Executors.newVirtualThreadPerTaskExecutor();
     
     /**
      * Method to calculate the UserRewards of a List<User>.
      * <p>
      * The calculation is slow because of the RewardCentral response.
-     * To overcome this slowdown a new Thread is create for each iterate.
+     * To overcome this slowdown the executorService managed a ThreadPool and generate virtualThreads for each iterate.
      * </p>
      *
      * @param users the List<User>
@@ -117,6 +119,20 @@ public class RewardsService {
         return (getDistance(attraction, location) < attractionProximityRange);
     }
     
+    
+    /**
+     * Method to calculate the UserRewards of an User.
+     *
+     * <p>
+     * The calculation is slow because of the RewardCentral response.
+     * To overcome this slowdown the executorService managed a ThreadPool and generate virtualThreads for each iterate.
+     * </p>
+     *
+     * @param user the User parsed.
+     * @return a List of UserReward.
+     * @see #calculateUserRewards(User)
+     * @see RewardCentral
+     */
     public List<UserReward> calculateUserRewards(User user) {
         
         Callable<List<UserReward>> callable = new CalculateUserRewardsCallable(user, this);
@@ -260,7 +276,8 @@ public class RewardsService {
          * @see RewardsService#getDistance(Location, Location)
          */
         private boolean nearAttraction(VisitedLocation visitedLocation, Attraction attraction) {
-            return rewardsService.getDistance(attraction, visitedLocation.location) < rewardsService.getProximityBuffer();
+            return rewardsService.getDistance(attraction, visitedLocation.location) <
+                    rewardsService.getProximityBuffer();
         }
         
         /**
@@ -270,6 +287,10 @@ public class RewardsService {
          * For each pair key/value, create a new UserReward and add it in to a List<UserRewards>.
          * Finally call the addUserReward method of the User parsed to save the list.
          * </p>
+         * <p>
+         * The calculation is slow because of the call of the getRewardPoints method who call the rewardCentral API.
+         * To overcome this slowdown the executorService managed a ThreadPool and generate virtualThreads for each iterate.
+         * </p>
          *
          * @param newUserRewardsMap the map with all data to create new UserRewards.
          * @param user              the user required UserReward update.
@@ -277,17 +298,30 @@ public class RewardsService {
          * @see RewardsService#getRewardPoints(Attraction, User)
          */
         private List<UserReward> mapToSetUserRewards(Map<Attraction, VisitedLocation> newUserRewardsMap, User user) {
+            ExecutorService executorService = Executors.newVirtualThreadPerTaskExecutor();
             List<UserReward> userRewardsToSave = new ArrayList<>();
             
+            List<Future<UserReward>> futures = new ArrayList<>();
             for(Map.Entry<Attraction, VisitedLocation> entry : newUserRewardsMap.entrySet()) {
-                userRewardsToSave.add(new UserReward(entry.getValue(), entry.getKey(),
-                        rewardsService.getRewardPoints(entry.getKey(), user)));
+                Future<UserReward> future = executorService.submit(
+                        () -> new UserReward(entry.getValue(), entry.getKey(),
+                                rewardsService.getRewardPoints(entry.getKey(), user)));
+                futures.add(future);
+            }
+            
+            for(Future<UserReward> future : futures) {
+                try {
+                    
+                    userRewardsToSave.add(future.get());
+                } catch(InterruptedException | ExecutionException e) {
+                    throw new RuntimeException(e);
+                }
             }
             
             user.addUserReward(userRewardsToSave);
             
+            executorService.shutdownNow();
             return userRewardsToSave;
         }
     }
-    
 }

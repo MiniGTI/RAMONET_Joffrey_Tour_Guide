@@ -38,10 +38,13 @@ import java.util.concurrent.Future;
 public class UserService {
     
     private final RewardsService rewardsService;
-    public final Tracker tracker;
-    public final Map<String, User> internalUserMap = new HashMap<>();
-    private final ExecutorService executorService = Executors.newFixedThreadPool(1000);
     
+    public final Tracker tracker;
+    
+    public final Map<String, User> internalUserMap = new HashMap<>();
+    
+    private final ExecutorService executorService = Executors.newVirtualThreadPerTaskExecutor();
+
     public UserService(RewardsService rewardsService) {
         this.rewardsService = rewardsService;
         
@@ -90,7 +93,7 @@ public class UserService {
     /**
      * Method to call the TrackUserCallable in a new Thread.
      * <p>
-     * Use the FixedThreadPool of the executorService to call TrackUserCallable(user).
+     * Use the VirtualThreadPerTaskExecutor of the executorService to call TrackUserCallable(user).
      * </p>
      *
      * @param user User parsed to calculate the current Location.
@@ -115,7 +118,7 @@ public class UserService {
      * Method to Track all User location.
      * <p>
      * Create a List<Future<VisitedLocation> to prepare Threads.
-     * Use the FixedThreadPool of the executorService to call TrackUserCallable(user) for each Users.
+     * Use the VirtualThreadPerTaskExecutor of the executorService to call TrackUserCallable(user) for each Users.
      * </p>
      *
      * @see #trackUserLocation(User)
